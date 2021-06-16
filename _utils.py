@@ -4,6 +4,8 @@ import json
 import requests
 import shutil
 import subprocess
+import sys
+from tqdm.notebook import tqdm
 
 
 global_status = {
@@ -172,3 +174,18 @@ def run_app(desc = "open app at: {}", func = None):
     url = start_ngrok()
     print(desc.format(url))
     func()
+
+def install_pip_dependencies(silent = True):
+    commands = ['pip install pyngrok==5.0.5', 'pip install pylint']
+    lib_names = ['pyngrok', 'pylint']
+    cmds_to_install = []
+    cprint("resolving dependencies", silent)
+    output = subprocess.check_output("pip freeze", shell = True).decode(sys.stdout.encoding)
+    installed_libs = [f.split("==")[0] for f in output.split("\n")]
+    for idx,lib in enumerate(lib_names):
+        if lib not in installed_libs:
+            cmds_to_install.append(commands[idx])
+
+    if len(cmds_to_install) > 0:
+        for c in tqdm(cmds_to_install):
+            run_bash(c)

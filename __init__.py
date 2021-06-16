@@ -1,5 +1,5 @@
 import os
-from ._utils import user_select, try_mount_drive, setting_workspace_drive, setting_up_caches, load_token, install_dependencies, run_app
+from ._utils import user_select, try_mount_drive, setting_workspace_drive, setting_up_caches, load_token, install_pip_dependencies, run_app
 
 class Code(object):
     def init_env(self, mount_path = '/content/drive', regen_token = False, silent = True):
@@ -12,7 +12,7 @@ class Code(object):
         setting_up_caches(silent)
         download_vscode(silent)
         load_token(regen_token)
-        install_dependencies()
+        install_pip_dependencies()
 
     def start_server(self):
         from dev.code.codeapp import start_vscode_loop
