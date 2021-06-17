@@ -95,7 +95,7 @@ def setting_workspace_drive(mount_path = '/content/drive', silent = True):
         else:
             drive_name = get_drive_name(mount_path)
             global_status['workspace_drive'] = f"{mount_path}/{drive_name}"
-    if global_status['workspace_drive']:
+    if global_status.get('workspace_drive', None):
         cprint(f"workspace drive = {global_status['workspace_drive']}", silent)
     
 def input_user_token():
