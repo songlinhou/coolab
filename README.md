@@ -19,9 +19,13 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1SyUpFRWQrgriUnJcLGMatDvxxKP9TU5r?usp=sharing)
 
 ```
-!pip install coolab
-import coolab; coolab.Code().run()
+!pip install coolab # install package using pip
+import coolab; coolab.Code().run() # run in seconds.
 ```
+
+## How Fast is it
+
+We cache vscode installation files and configurations in your google drive if you choose to mount your drive. It takes much less time if you run the same code at the second time.
 
 ## Next Step
 
