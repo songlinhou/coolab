@@ -9,7 +9,7 @@ from tqdm.notebook import tqdm
 
 scirpt_dir_loc = os.path.dirname(__file__)
 sys.path.insert(0, scirpt_dir_loc)
-import confg
+import confg # ignore the error here
 
 
 global_status = {
@@ -44,7 +44,6 @@ def user_select(question, options):
         except:
             print(f"{Bcolors.FAIL}only numbers (1-{len(options)}) are acceptable.{Bcolors.ENDC}")
     return choice
-
 
 
 def cprint(content, silent = False):
@@ -175,7 +174,8 @@ def start_ngrok():
         open_folder = f"?folder={workspace_drive}"
         url = public_url.public_url.replace('http','https') + open_folder
         return url
-    except:
+    except Exception e:
+        print(f"{Bcolors.FAIL}{str(e)}{Bcolors.ENDC}")
         return None
 
 def start_local_tunnel():
@@ -187,11 +187,29 @@ def start_local_tunnel():
         os.remove("url.txt")
         url = s[s.index("https://"):]
         return url
-    except:
+    except Exception e:
+        print(f"{Bcolors.FAIL}{str(e)}{Bcolors.ENDC}")
         return None
 
-def run_app(desc = "open app at: {}", func = None):
-    url = start_ngrok()
+def run_app(desc = "open app at: {}", func = None, tunnel = "ngrok", auto_alternative_tunnel = True):
+    tunnels = ["ngrok", "localtunnel"]
+    if tunnel == tunnels[0]:
+        url = start_ngrok()
+        if auto_alternative_tunnel and url is None:
+            url = start_local_tunnel()
+    elif tunnel == tunnels[1]:
+        url = start_local_tunnel()
+        if auto_alternative_tunnel and url is None:
+            url = start_local_tunnel()
+    else:
+        assert False, "tunnel must be either ngrok or localtunnel."
+    if not url:
+        other_tunnel = list(set(tunnels).difference(tunnel))[0]
+        if not auto_alternative_tunnel:
+        err_msg = f"{Bcolors.HEADER} Error occured when using {tunnel}. You can choose {other_tunnel} for tunneling. We also recommend setting auto_alternative_tunnel = True for best compability.{Bcolors.ENDC}"
+        raise Exception(err_msg)
+        
+
     print(desc.format(url))
     func()
 
