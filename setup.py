@@ -24,8 +24,7 @@ setup(
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Operating System :: Linux"
+        "Programming Language :: Python :: 3.7"
     ],
     packages=["coolab"],
     include_package_data=True,
