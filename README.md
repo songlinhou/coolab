@@ -22,3 +22,11 @@
 !pip install coolab
 import coolab; coolab.Code().run()
 ```
+
+## Next Step
+
+We aim to provide more online tools using the computation resource of Google Colab. You start to use these awesome tools and we deal with the rest!
+
+## Suggestions
+
+Feel free to create new [issue](https://github.com/songlinhou/coolab/issues) so we can improve this library!
