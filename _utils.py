@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 from tqdm.notebook import tqdm
+import confg
 
 
 global_status = {
@@ -207,7 +208,6 @@ def run_app(desc = "open app at: {}", func = None):
 #             run_bash(c)
 
 def install_pip_dependencies(silent = True):
-    import confg
     _configs = confg.get_config()
     pip_libs = _configs['pip-libs']
     lib_names = [item['name'] for item in pip_libs]
@@ -225,7 +225,6 @@ def install_pip_dependencies(silent = True):
 
 
 def install_bash_dependencies(silent = True):
-    import confg
     _configs = confg.get_config()
     app_configs = _configs['apps']
     install_cmds = []
