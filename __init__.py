@@ -1,9 +1,10 @@
 import os
-from ._utils import user_select, try_mount_drive, setting_workspace_drive, setting_up_caches, load_token, install_pip_dependencies, run_app
+from ._utils import user_select, try_mount_drive, setting_workspace_drive, setting_up_caches, load_token, run_app
 
 class Code(object):
     def init_env(self, mount_path = '/content/drive', regen_token = False, silent = True):
         from dev.code.codeapp import download_vscode
+        from ._utils import install_pip_dependencies
         if not os.path.exists(mount_path):
             choice = user_select("Mount your google drive?", ["Yes","No"])
             if choice == 1:
