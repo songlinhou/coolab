@@ -6,6 +6,9 @@ import shutil
 import subprocess
 import sys
 from tqdm.notebook import tqdm
+
+scirpt_dir_loc = os.path.dirname(__file__)
+sys.path.insert(scirpt_dir_loc)
 import confg
 
 
