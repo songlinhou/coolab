@@ -18,6 +18,7 @@ class Code(object):
 
     def start_server(self, tunnel, auto_alternative_tunnel):
         from .dev.code.codeapp import start_vscode_loop
+        assert tunnel == "ngrok", "The other tunnel options are still un-stable to use. Please use ngrok for now."
         run_app(desc="visit vscode at {}", func=start_vscode_loop, tunnel=tunnel, auto_alternative_tunnel=auto_alternative_tunnel)
 
     def run(self, mount_path = '/content/drive', regen_token = False, tunnel = "ngrok", auto_alternative_tunnel = True,silent = True):
