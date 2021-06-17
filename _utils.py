@@ -8,7 +8,7 @@ import sys
 from tqdm.notebook import tqdm
 
 scirpt_dir_loc = os.path.dirname(__file__)
-sys.path.insert(scirpt_dir_loc)
+sys.path.insert(0, scirpt_dir_loc)
 import confg
 
 
