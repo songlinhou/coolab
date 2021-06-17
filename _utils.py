@@ -174,7 +174,7 @@ def start_ngrok():
         open_folder = f"?folder={workspace_drive}"
         url = public_url.public_url.replace('http','https') + open_folder
         return url
-    except Exception e:
+    except Exception as e:
         print(f"{Bcolors.FAIL}{str(e)}{Bcolors.ENDC}")
         return None
 
@@ -187,7 +187,7 @@ def start_local_tunnel():
         os.remove("url.txt")
         url = s[s.index("https://"):]
         return url
-    except Exception e:
+    except Exception as e:
         print(f"{Bcolors.FAIL}{str(e)}{Bcolors.ENDC}")
         return None
 
