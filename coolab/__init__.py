@@ -1,6 +1,8 @@
 import os
 from ._utils import user_select, try_mount_drive, setting_workspace_drive, setting_up_caches, load_token, run_app
 
+__version__ = "1.0.0"
+
 class Code(object):
     def init_env(self, mount_path = '/content/drive', regen_token = False, silent = True):
         from .dev.code.codeapp import download_vscode
