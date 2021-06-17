@@ -191,9 +191,27 @@ def run_app(desc = "open app at: {}", func = None):
     print(desc.format(url))
     func()
 
+# def install_pip_dependencies(silent = True):
+#     commands = ['pip install pyngrok==5.0.5', 'pip install pylint']
+#     lib_names = ['pyngrok', 'pylint']
+#     cmds_to_install = []
+#     cprint("resolving dependencies", silent)
+#     output = subprocess.check_output("pip freeze", shell = True).decode(sys.stdout.encoding)
+#     installed_libs = [f.split("==")[0] for f in output.split("\n")]
+#     for idx,lib in enumerate(lib_names):
+#         if lib not in installed_libs:
+#             cmds_to_install.append(commands[idx])
+
+#     if len(cmds_to_install) > 0:
+#         for c in tqdm(cmds_to_install):
+#             run_bash(c)
+
 def install_pip_dependencies(silent = True):
-    commands = ['pip install pyngrok==5.0.5', 'pip install pylint']
-    lib_names = ['pyngrok', 'pylint']
+    import confg
+    _configs = confg.get_config()
+    pip_libs = _configs['pip-libs']
+    lib_names = [item['name'] for item in pip_libs]
+    commands = [item['install'] for item in pip_libs]
     cmds_to_install = []
     cprint("resolving dependencies", silent)
     output = subprocess.check_output("pip freeze", shell = True).decode(sys.stdout.encoding)
@@ -201,11 +219,27 @@ def install_pip_dependencies(silent = True):
     for idx,lib in enumerate(lib_names):
         if lib not in installed_libs:
             cmds_to_install.append(commands[idx])
-
     if len(cmds_to_install) > 0:
         for c in tqdm(cmds_to_install):
             run_bash(c)
 
+
 def install_bash_dependencies(silent = True):
-    
-    s = subprocess.check_output("which lt", shell=True).decode(sys.stdout.encoding)
+    import confg
+    _configs = confg.get_config()
+    app_configs = _configs['apps']
+    install_cmds = []
+    app_names = []
+    for idx, app_cfg in enumerate(app_configs):
+        bin_file = app_cfg["bin"]
+        try:
+            subprocess.check_output(f"which {bin_file}", shell=True).decode(sys.stdout.encoding)
+        except:
+            # not installed
+            install_cmds.append(app_cfg['install'])
+            app_names.append(app_cfg['name'])
+
+    if len(install_cmds) > 0:
+        cprint("apps to be installed:" + " ".join(app_names))
+        for cmd in tqdm(install_cmds):
+            run_bash(cmd)
