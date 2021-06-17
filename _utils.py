@@ -206,10 +206,9 @@ def run_app(desc = "open app at: {}", func = None, tunnel = "ngrok", auto_altern
     if not url:
         other_tunnel = list(set(tunnels).difference(tunnel))[0]
         if not auto_alternative_tunnel:
-        err_msg = f"{Bcolors.HEADER} Error occured when using {tunnel}. You can choose {other_tunnel} for tunneling. We also recommend setting auto_alternative_tunnel = True for best compability.{Bcolors.ENDC}"
-        raise Exception(err_msg)
+            err_msg = f"{Bcolors.HEADER} Error occured when using {tunnel}. You can choose {other_tunnel} for tunneling. We also recommend setting auto_alternative_tunnel = True for best compability.{Bcolors.ENDC}"
+            raise Exception(err_msg)
         
-
     print(desc.format(url))
     func()
 
