@@ -19,6 +19,7 @@ setup(
     url="https://github.com/songlinhou/coolab",
     author="Ray Hou",
     author_email="songlinhou1993@gmail.com",
+    keywords=['colab', 'vscode', 'python'],
     license="MIT",
     classifiers=[
         "License :: OSI Approved :: MIT License",
@@ -29,9 +30,9 @@ setup(
     packages=["coolab"],
     include_package_data=True,
     install_requires=["pyngrok", "pylint"],
-    entry_points={
-        # "console_scripts": [
-        #     "realpython=reader.__main__:main",
-        # ]
-    },
+    # entry_points={
+    #     "console_scripts": [
+    #         "realpython=reader.__main__:main",
+    #     ]
+    # },
 )
