@@ -185,6 +185,7 @@ def start_local_tunnel():
         with open("url.txt") as f:
             s = f.read().strip()
         os.remove("url.txt")
+        print("s=",s)
         url = s[s.index("https://"):]
         return url
     except Exception as e:
