@@ -16,11 +16,11 @@ class Code(object):
         install_pip_dependencies(silent)
         install_bash_dependencies(silent)
 
-    def start_server(self):
+    def start_server(self, tunnel, auto_alternative_tunnel):
         from .dev.code.codeapp import start_vscode_loop
-        run_app(desc="visit vscode at {}", func=start_vscode_loop)
+        run_app(desc="visit vscode at {}", func=start_vscode_loop, tunnel, auto_alternative_tunnel)
 
-    def run(self, mount_path = '/content/drive', regen_token = False, silent = True):
+    def run(self, mount_path = '/content/drive', regen_token = False, tunnel = "ngrok", auto_alternative_tunnel = True,silent = True):
         self.init_env(mount_path, regen_token, silent)
-        self.start_server()
+        self.start_server(tunnel=tunnel, auto_alternative_tunnel=auto_alternative_tunnel)
         
