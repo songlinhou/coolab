@@ -163,13 +163,28 @@ def setting_up_caches(silent = False):
 def start_ngrok():
     from pyngrok import ngrok
     ngrok.kill()
-    run_bash
+    # run_bash("killall ngrok") # prevent current active sessions
+    try:
+        port = global_status.get("port", 8050)
+        public_url = ngrok.connect(port)
+        workspace_drive = global_status.get("workspace_drive", "/content")
+        open_folder = f"?folder={workspace_drive}"
+        url = public_url.public_url.replace('http','https') + open_folder
+        return url
+    except:
+        return None
+
+def start_local_tunnel():
     port = global_status.get("port", 8050)
-    public_url = ngrok.connect(port)
-    workspace_drive = global_status.get("workspace_drive", "/content")
-    open_folder = f"?folder={workspace_drive}"
-    url = public_url.public_url.replace('http','https') + open_folder
-    return url
+    get_ipython().system_raw(f'lt --port {port} >> url.txt 2>&1 &') # ignore the error hint here
+    try:
+        with open("url.txt") as f:
+            s = f.read().strip()
+        os.remove("url.txt")
+        url = s[s.index("https://"):]
+        return url
+    except:
+        return None
 
 def run_app(desc = "open app at: {}", func = None):
     url = start_ngrok()
@@ -190,3 +205,7 @@ def install_pip_dependencies(silent = True):
     if len(cmds_to_install) > 0:
         for c in tqdm(cmds_to_install):
             run_bash(c)
+
+def install_bash_dependencies(silent = True):
+    
+    s = subprocess.check_output("which lt", shell=True).decode(sys.stdout.encoding)
