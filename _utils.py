@@ -95,7 +95,8 @@ def setting_workspace_drive(mount_path = '/content/drive', silent = True):
         else:
             drive_name = get_drive_name(mount_path)
             global_status['workspace_drive'] = f"{mount_path}/{drive_name}"
-    cprint(f"workspace drive = {global_status['workspace_drive']}", silent)
+    if global_status['workspace_drive']:
+        cprint(f"workspace drive = {global_status['workspace_drive']}", silent)
     
 def input_user_token():
     question = "Input your ngrok token in your workspace:"
