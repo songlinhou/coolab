@@ -2,6 +2,8 @@ import shutil
 import os
 import requests
 import json
+import requests
+from pprint import pprint
 
 def download_vscode(silent = True):
     from ..._utils import global_status, cprint, setting_up_caches, run_bash
@@ -26,16 +28,10 @@ def download_vscode(silent = True):
 def get_history():
     from ..._utils import global_status
     port = global_status.get("port", 8050)
-    os.system(f"curl http://localhost:{port}/api/tunnels > tunnels.json")
-    with open('tunnels.json') as data_file:    
-        datajson = json.load(data_file)
-
-    msg = "ngrok URL's: \n"
-    for i in datajson['tunnels']:
-        msg = msg + i['public_url'] +'\n'
-
-    print (msg)
-    return msg
+    resp = requests.get(url=f"curl http://localhost:{port}/api/tunnels")
+    data = resp.json() # Check the JSON Response Content documentation below
+    pprint(data)
+    return 
 
 def start_vscode_loop():
     from pyngrok import ngrok
