@@ -118,7 +118,7 @@ def input_user_token():
     return token_input
 
 def input_user_token_empty_allowed():
-    question = "Input your ngrok token in your workspace:"
+    question = "Input your ngrok token in your workspace(leave empty if you don't have one):"
     print(f"")
     token_input = ""
     while(1):

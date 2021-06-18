@@ -26,11 +26,14 @@ def download_vscode(silent = True):
     run_bash("tar -xf code-server-3.5.0-linux-x86_64.tar.gz")
 
 def get_history():
-    from ..._utils import global_status
-    port = global_status.get("port", 8050)
-    resp = requests.get(url=f"http://localhost:{port}/api/tunnels")
-    data = resp.json() # Check the JSON Response Content documentation below
-    pprint(data)
+    try:
+        from ..._utils import global_status
+        port = global_status.get("port", 8050)
+        resp = requests.get(url=f"http://localhost:{port}/api/tunnels")
+        data = resp.json() # Check the JSON Response Content documentation below
+        pprint(data)
+    except:
+        print("no history obtained.")
     return 
 
 def start_vscode_loop():
