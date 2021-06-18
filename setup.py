@@ -12,7 +12,7 @@ VERSION = '1.0.0'
 # This call to setup() does all the work
 setup(
     name="coolab",
-    version="1.0.0",
+    version=VERSION,
     description="Instantly working cool apps you can use on Google Colab!",
     long_description=README,
     long_description_content_type="text/markdown",

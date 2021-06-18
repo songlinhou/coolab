@@ -67,12 +67,13 @@ def get_browse_history(debug = False):
                         vscode_history = json.load(open(vscode_history_path))
                     except:
                         vscode_history = []
-                vscode_history = uniq_dirs + vscode_history
-                vscode_history = remove_duplicates(vscode_history)
+                new_vscode_history = uniq_dirs + vscode_history
+                new_vscode_history = remove_duplicates(new_vscode_history)
                 try:
-                    with open(vscode_history_path, 'w') as f:
-                        json.dump(vscode_history, f)
-                        cprint("browsing history cached...", silent)
+                    if new_vscode_history != vscode_history:
+                        with open(vscode_history_path, 'w') as f:
+                            json.dump(vscode_history, f)
+                            cprint("browsing history cached...", silent)
                 except:
                     cprint("error in caching browsing history", silent)
 
@@ -93,7 +94,7 @@ def start_timer(func, debug):
 
 
 
-def start_vscode_loop(debug = True):
+def start_vscode_loop(debug = False):
     from pyngrok import ngrok
     from ..._utils import global_status, run_bash
     port = global_status.get("port", 8050)
@@ -111,7 +112,6 @@ def start_vscode_loop(debug = True):
         print("start running code-server")
         run_bash(vs_commd)
     except KeyboardInterrupt:
-        # get_browse_history() # get history # TODO: error here!
         ngrok.kill()
     except Exception as e:
         print("error:" + str(e))
