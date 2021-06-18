@@ -192,7 +192,27 @@ def start_ngrok():
         port = global_status.get("port", 8050)
         public_url = ngrok.connect(port)
         workspace_drive = global_status.get("workspace_drive", "/content")
-        open_folder = f"?folder={workspace_drive}"
+        cache_folder_path = global_status.get("cache_folder_path", None)
+        recent_open_path = None
+        if cache_folder_path:
+            vscode_history = []
+            vscode_history_path = os.path.join(cache_folder_path, "vscode_history.json")
+        
+            if os.path.exists(vscode_history_path):
+                try:
+                    # read the history file and populate the vscode_history
+                    vscode_history = json.load(open(vscode_history_path))
+                    if len(vscode_history) > 0:
+                        recent_open_path = vscode_history[0]
+                except:
+                    # the file is corrupted
+                    pass
+        
+        if recent_open_path is not None:
+            print(f"{Bcolors.OKBLUE}browsing history found.{Bcolors.ENDC}")
+            open_folder = f"?folder={recent_open_path}"
+        else:
+            open_folder = f"?folder={workspace_drive}"
         url = public_url.public_url.replace('http','https') + open_folder
         return url
     except Exception as e:

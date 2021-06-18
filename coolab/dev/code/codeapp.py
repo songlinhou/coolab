@@ -118,3 +118,4 @@ def start_vscode_loop(debug = True):
     finally:
         if timer is not None:
             timer.cancel()
+        ngrok.kill()
