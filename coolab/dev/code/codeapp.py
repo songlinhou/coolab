@@ -4,6 +4,8 @@ import requests
 import json
 import requests
 from pprint import pprint
+import requests 
+
 
 def download_vscode(silent = True):
     from ..._utils import global_status, cprint, setting_up_caches, run_bash
@@ -25,15 +27,25 @@ def download_vscode(silent = True):
     shutil.copy(save_loc, "/content")
     run_bash("tar -xf code-server-3.5.0-linux-x86_64.tar.gz")
 
-def get_history():
+
+def get_browse_history():
     try:
-        from ..._utils import global_status
-        resp = requests.get(url=f"http://localhost:4040/api/tunnels")
-        data = resp.json() # Check the JSON Response Content documentation below
-        pprint(data)
-    except:
-        print("no history obtained.")
-    return 
+        url = "http://localhost:4040/api/requests/http?limit=50"
+        res = requests.get(url)
+        j = res.json()
+        reqs = j['requests']
+        uniq_dirs = []
+        sreqs = [req['request']['headers'].get('Referer',[None])[0] for req in reqs]
+        for urls in sreqs:
+            if urls not in uniq_dirs and urls is not None and "?folder=" in urls:
+                uniq_dirs.append(urls)
+        uniq_dirs = [urls.split("/?folder=")[1] for urls in uniq_dirs]
+        if len(uniq_dirs) > 0:
+            print("these work dirs will be saved")
+            print(uniq_dirs)
+    except Exception as e:
+        print("error in getting history:" + str(e))
+
 
 def start_vscode_loop():
     from pyngrok import ngrok
@@ -43,6 +55,6 @@ def start_vscode_loop():
     try:
         run_bash(vs_commd)
     except KeyboardInterrupt:
-        get_history() # get history
+        get_browse_history() # get history # TODO: error here!
         ngrok.kill()
     print("vscode has been terminated.")
