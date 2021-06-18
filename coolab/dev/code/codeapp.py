@@ -58,8 +58,11 @@ def do_something(sc):
     get_browse_history()
     s.enter(5, 1, do_something, (sc,))
 
-def hello():
-    print("hello, world")
+def start_timer(func):
+    print("get history")
+    func()
+    t = Timer(3.0, start_timer,[func])
+    t.start()
 
 
 from threading import Timer
@@ -72,7 +75,7 @@ def start_vscode_loop():
     try:
         # s.enter(5, 1, do_something, (s,))
         # s.run(blocking=False)
-        t = Timer(3.0, hello)
+        t = Timer(3.0, start_timer, [get_browse_history])
         t.start()
         print("start running code-server")
         run_bash(vs_commd)
