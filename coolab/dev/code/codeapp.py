@@ -53,7 +53,7 @@ s = sched.scheduler(time.time, time.sleep)
 def do_something(sc): 
     print("Doing stuff...")
     # do your stuff
-    s.enter(60, 1, do_something, (sc,))
+    s.enter(5, 1, do_something, (sc,))
 
 
 
@@ -64,8 +64,8 @@ def start_vscode_loop():
     port = global_status.get("port", 8050)
     vs_commd = f"./code-server-3.5.0-linux-x86_64/bin/code-server --port {port} --auth none"
     try:
-        s.enter(60, 1, do_something, (s,))
-        s.run()
+        s.enter(5, 1, do_something, (s,))
+        s.run(blocking=True)
         print("start running code-server")
         run_bash(vs_commd)
     except KeyboardInterrupt:
