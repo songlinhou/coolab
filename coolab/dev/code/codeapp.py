@@ -6,6 +6,7 @@ import requests
 from pprint import pprint
 import requests
 from _utils  import user_select
+from threading import Timer
 
 
 def download_vscode(silent = True):
@@ -30,6 +31,9 @@ def download_vscode(silent = True):
 
 
 def get_browse_history():
+    """
+    return a list of working directories for current session
+    """
     try:
         url = "http://localhost:4040/api/requests/http?limit=50"
         res = requests.get(url)
@@ -44,14 +48,31 @@ def get_browse_history():
         if len(uniq_dirs) > 0:
             print("these work dirs will be saved")
             print(uniq_dirs)
+            # save dirs to cache
+            from ..._utils import global_status, run_bash
+            cache_folder_path = global_status.get("cache_folder_path", None)
+            vscode_history = []
+            if cache_folder_path:
+                vscode_history_path = os.path.join(cache_folder_path, "vscode_history.json")
+                if os.path.exists(vscode_history_path):
+                    try:
+                        vscode_history = json.load(open(vscode_history_path))
+                    except:
+                        vscode_history = []
+                vscode_history = uniq_dirs + vscode_history
+                try:
+                    with open(vscode_history_path, 'w') as f:
+                        json.dump(vscode_history, f)
+                        print("browsing history cached...")
+                except:
+                    print("error in caching browsing history")
+
         else:
             print("empty dirs.")
     except Exception as e:
         print("error in getting history:" + str(e))
 
 
-import sched, time
-s = sched.scheduler(time.time, time.sleep)
 timer = None
 
 def start_timer(func):
@@ -62,7 +83,6 @@ def start_timer(func):
     timer.start()
 
 
-from threading import Timer
 
 def start_vscode_loop():
     from pyngrok import ngrok
@@ -72,8 +92,12 @@ def start_vscode_loop():
     try:
         # s.enter(5, 1, do_something, (s,))
         # s.run(blocking=False)
-        t = Timer(20.0, start_timer, [get_browse_history])
-        t.start()
+        cache_folder_path = global_status.get("cache_folder_path", None)
+        if cache_folder_path:
+            t = Timer(20.0, start_timer, [get_browse_history])
+            t.start()
+        else:
+            print("cache is disabled.")
         print("start running code-server")
         run_bash(vs_commd)
     except KeyboardInterrupt:
@@ -82,4 +106,5 @@ def start_vscode_loop():
     except Exception as e:
         print("error:" + str(e))
     finally:
-        timer.cancel()
+        if timer is not None:
+            timer.cancel()
