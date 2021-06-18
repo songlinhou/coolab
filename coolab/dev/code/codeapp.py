@@ -52,17 +52,14 @@ def get_browse_history():
 
 import sched, time
 s = sched.scheduler(time.time, time.sleep)
-def do_something(sc): 
-    print("Doing stuff...")
-    # do your stuff
-    get_browse_history()
-    s.enter(5, 1, do_something, (sc,))
+timer = None
 
 def start_timer(func):
+    global timer
     print("get history")
     func()
-    t = Timer(3.0, start_timer,[func])
-    t.start()
+    timer = Timer(20.0, start_timer,[func])
+    timer.start()
 
 
 from threading import Timer
@@ -75,7 +72,7 @@ def start_vscode_loop():
     try:
         # s.enter(5, 1, do_something, (s,))
         # s.run(blocking=False)
-        t = Timer(3.0, start_timer, [get_browse_history])
+        t = Timer(20.0, start_timer, [get_browse_history])
         t.start()
         print("start running code-server")
         run_bash(vs_commd)
@@ -84,3 +81,5 @@ def start_vscode_loop():
         ngrok.kill()
     except Exception as e:
         print("error:" + str(e))
+    finally:
+        timer.cancel()
