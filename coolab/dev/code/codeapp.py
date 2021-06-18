@@ -1,6 +1,7 @@
 import shutil
 import os
 import requests
+import json
 
 def download_vscode(silent = True):
     from ..._utils import global_status, cprint, setting_up_caches, run_bash
@@ -22,6 +23,19 @@ def download_vscode(silent = True):
     shutil.copy(save_loc, "/content")
     run_bash("tar -xf code-server-3.5.0-linux-x86_64.tar.gz")
 
+def get_history():
+    from ..._utils import global_status
+    port = global_status.get("port", 8050)
+    os.system(f"curl http://localhost:{port}/api/tunnels > tunnels.json")
+    with open('tunnels.json') as data_file:    
+        datajson = json.load(data_file)
+
+    msg = "ngrok URL's: \n"
+    for i in datajson['tunnels']:
+        msg = msg + i['public_url'] +'\n'
+
+    print (msg)
+    return msg
 
 def start_vscode_loop():
     from pyngrok import ngrok
@@ -31,5 +45,6 @@ def start_vscode_loop():
     try:
         run_bash(vs_commd)
     except KeyboardInterrupt:
+        get_history() # get history
         ngrok.kill()
     print("vscode has been terminated.")

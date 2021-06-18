@@ -214,10 +214,9 @@ def start_local_tunnel():
 #     func()
 
 def run_app(desc = "open app at: {}", func = None, tunnel = "ngrok", auto_alternative_tunnel = True):
-    
     url = start_ngrok()
     if not url:
-        print(f"{Bcolors.FAIL}The token you used cannot be used. Ngrok is used without token.{Bcolors.ENDC}")
+        print(f"{Bcolors.BOLD}The token you used cannot be used. Ngrok is used without token.{Bcolors.ENDC}")
         os.remove('/root/.ngrok2/ngrok.yml') # the token may not work
         url = start_ngrok()
         if not url:

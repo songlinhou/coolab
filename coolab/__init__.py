@@ -8,7 +8,7 @@ class Code(object):
         from .dev.code.codeapp import download_vscode
         from ._utils import install_pip_dependencies, install_bash_dependencies
         if not os.path.exists(mount_path):
-            choice = user_select("Mount your google drive?", ["Yes","No"])
+            choice = user_select("Mount your google drive?[recommended for better user experience]", ["Yes","No"])
             if choice == 1:
                 try_mount_drive(mount_path)
         setting_workspace_drive(mount_path)
@@ -20,7 +20,8 @@ class Code(object):
 
     def start_server(self, tunnel, auto_alternative_tunnel):
         from .dev.code.codeapp import start_vscode_loop
-        assert tunnel == "ngrok", "The other tunnel options are still un-stable to use. Please use ngrok for now."
+        if tunnel != "ngrok": 
+            print("The other tunnel options are still un-stable to use. Change back to ngrok.")
         run_app(desc="visit vscode at {}", func=start_vscode_loop, tunnel=tunnel, auto_alternative_tunnel=auto_alternative_tunnel)
 
     def run(self, mount_path = '/content/drive', regen_token = False, tunnel = "ngrok", auto_alternative_tunnel = True,silent = True):
