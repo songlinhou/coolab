@@ -5,7 +5,7 @@ import json
 import requests
 from pprint import pprint
 import requests
-from _utils  import user_select
+from _utils  import user_select, cprint
 from threading import Timer
 
 
@@ -30,10 +30,18 @@ def download_vscode(silent = True):
     run_bash("tar -xf code-server-3.5.0-linux-x86_64.tar.gz")
 
 
-def get_browse_history():
+def get_browse_history(debug = False):
     """
     return a list of working directories for current session
     """
+    def remove_duplicates(vscode_history, max_size = 50):
+        filtered = []
+        for h in vscode_history:
+            if h not in filtered:
+                filtered.append(h)
+        return filtered[:max_size]
+
+    silent = not debug
     try:
         url = "http://localhost:4040/api/requests/http?limit=50"
         res = requests.get(url)
@@ -46,7 +54,7 @@ def get_browse_history():
                 uniq_dirs.append(urls)
         uniq_dirs = [urls.split("/?folder=")[1] for urls in uniq_dirs]
         if len(uniq_dirs) > 0:
-            print("these work dirs will be saved")
+            cprint("these work dirs will be saved", silent)
             print(uniq_dirs)
             # save dirs to cache
             from ..._utils import global_status, run_bash
@@ -60,31 +68,32 @@ def get_browse_history():
                     except:
                         vscode_history = []
                 vscode_history = uniq_dirs + vscode_history
+                vscode_history = remove_duplicates(vscode_history)
                 try:
                     with open(vscode_history_path, 'w') as f:
                         json.dump(vscode_history, f)
-                        print("browsing history cached...")
+                        cprint("browsing history cached...", silent)
                 except:
-                    print("error in caching browsing history")
+                    cprint("error in caching browsing history", silent)
 
         else:
-            print("empty dirs.")
+            cprint("empty dirs.", silent)
     except Exception as e:
-        print("error in getting history:" + str(e))
+        cprint("error in getting history:" + str(e), silent)
 
 
 timer = None
 
-def start_timer(func):
+def start_timer(func, debug):
     global timer
     print("get history")
-    func()
-    timer = Timer(20.0, start_timer,[func])
+    func(debug)
+    timer = Timer(20.0, start_timer,[func, debug])
     timer.start()
 
 
 
-def start_vscode_loop():
+def start_vscode_loop(debug = True):
     from pyngrok import ngrok
     from ..._utils import global_status, run_bash
     port = global_status.get("port", 8050)
@@ -94,10 +103,11 @@ def start_vscode_loop():
         # s.run(blocking=False)
         cache_folder_path = global_status.get("cache_folder_path", None)
         if cache_folder_path:
-            t = Timer(20.0, start_timer, [get_browse_history])
+            print("browsing cache is enabled")
+            t = Timer(20.0, start_timer, [get_browse_history, debug])
             t.start()
         else:
-            print("cache is disabled.")
+            print("browsing cache is disabled.")
         print("start running code-server")
         run_bash(vs_commd)
     except KeyboardInterrupt:
