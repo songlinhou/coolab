@@ -44,6 +44,8 @@ def get_browse_history():
         if len(uniq_dirs) > 0:
             print("these work dirs will be saved")
             print(uniq_dirs)
+        else:
+            print("empty dirs.")
     except Exception as e:
         print("error in getting history:" + str(e))
 
@@ -53,6 +55,7 @@ s = sched.scheduler(time.time, time.sleep)
 def do_something(sc): 
     print("Doing stuff...")
     # do your stuff
+    get_browse_history()
     s.enter(5, 1, do_something, (sc,))
 
 
@@ -65,9 +68,11 @@ def start_vscode_loop():
     vs_commd = f"./code-server-3.5.0-linux-x86_64/bin/code-server --port {port} --auth none"
     try:
         s.enter(5, 1, do_something, (s,))
-        s.run(blocking=True)
+        s.run(blocking=False)
         print("start running code-server")
         run_bash(vs_commd)
     except KeyboardInterrupt:
         # get_browse_history() # get history # TODO: error here!
         ngrok.kill()
+    except Exception as e:
+        print("error:" + str(e))
