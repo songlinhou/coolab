@@ -48,12 +48,24 @@ def get_browse_history():
         print("error in getting history:" + str(e))
 
 
+import sched, time
+s = sched.scheduler(time.time, time.sleep)
+def do_something(sc): 
+    print("Doing stuff...")
+    # do your stuff
+    s.enter(60, 1, do_something, (sc,))
+
+
+
+
 def start_vscode_loop():
     from pyngrok import ngrok
     from ..._utils import global_status, run_bash
     port = global_status.get("port", 8050)
     vs_commd = f"./code-server-3.5.0-linux-x86_64/bin/code-server --port {port} --auth none"
     try:
+        s.enter(60, 1, do_something, (s,))
+        s.run()
         run_bash(vs_commd)
     except KeyboardInterrupt:
         get_browse_history() # get history # TODO: error here!
@@ -61,3 +73,4 @@ def start_vscode_loop():
         if choice == 1:
             ngrok.kill()
             print("vscode has been terminated.")
+        else:
