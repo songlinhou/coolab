@@ -192,24 +192,37 @@ def start_local_tunnel():
         print(f"{Bcolors.FAIL}{str(e)}{Bcolors.ENDC}")
         return None
 
-def run_app(desc = "open app at: {}", func = None, tunnel = "ngrok", auto_alternative_tunnel = True):
-    tunnels = ["ngrok", "localtunnel"]
-    if tunnel == tunnels[0]:
-        url = start_ngrok()
-        if auto_alternative_tunnel and url is None:
-            url = start_local_tunnel()
-    elif tunnel == tunnels[1]:
-        url = start_local_tunnel()
-        if auto_alternative_tunnel and url is None:
-            url = start_local_tunnel()
-    else:
-        assert False, "tunnel must be either ngrok or localtunnel."
-    if not url:
-        other_tunnel = list(set(tunnels).difference(tunnel))[0]
-        if not auto_alternative_tunnel:
-            err_msg = f"{Bcolors.HEADER} Error occured when using {tunnel}. You can choose {other_tunnel} for tunneling. We also recommend setting auto_alternative_tunnel = True for best compability.{Bcolors.ENDC}"
-            raise Exception(err_msg)
+# def run_app(desc = "open app at: {}", func = None, tunnel = "ngrok", auto_alternative_tunnel = True):
+#     tunnels = ["ngrok", "localtunnel"]
+#     if tunnel == tunnels[0]:
+#         url = start_ngrok()
+#         if auto_alternative_tunnel and url is None:
+#             url = start_local_tunnel()
+#     elif tunnel == tunnels[1]:
+#         url = start_local_tunnel()
+#         if auto_alternative_tunnel and url is None:
+#             url = start_local_tunnel()
+#     else:
+#         assert False, "tunnel must be either ngrok or localtunnel."
+#     if not url:
+#         other_tunnel = list(set(tunnels).difference(tunnel))[0]
+#         if not auto_alternative_tunnel:
+#             err_msg = f"{Bcolors.HEADER} Error occured when using {tunnel}. You can choose {other_tunnel} for tunneling. We also recommend setting auto_alternative_tunnel = True for best compability.{Bcolors.ENDC}"
+#             raise Exception(err_msg)
         
+#     print(desc.format(url))
+#     func()
+
+def run_app(desc = "open app at: {}", func = None, tunnel = "ngrok", auto_alternative_tunnel = True):
+    
+    url = start_ngrok()
+    if not url:
+        print(f"{Bcolors.FAIL}The token you used cannot be used. Ngrok is used without token.{Bcolors.ENDC}")
+        os.remove('/root/.ngrok2/ngrok.yml') # the token may not work
+        url = start_ngrok()
+        if not url:
+            err = f"{Bcolors.FAIL}Cannot set up the tunnel{Bcolors.ENDC}"
+            raise Exception(err)
     print(desc.format(url))
     func()
 
