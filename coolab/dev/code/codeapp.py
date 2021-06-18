@@ -66,6 +66,7 @@ def start_vscode_loop():
     try:
         s.enter(60, 1, do_something, (s,))
         s.run()
+        print("start running code-server")
         run_bash(vs_commd)
     except KeyboardInterrupt:
         # get_browse_history() # get history # TODO: error here!
