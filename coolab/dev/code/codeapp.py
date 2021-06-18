@@ -4,7 +4,8 @@ import requests
 import json
 import requests
 from pprint import pprint
-import requests 
+import requests
+from _utils  import user_select
 
 
 def download_vscode(silent = True):
@@ -56,5 +57,7 @@ def start_vscode_loop():
         run_bash(vs_commd)
     except KeyboardInterrupt:
         get_browse_history() # get history # TODO: error here!
-        ngrok.kill()
-    print("vscode has been terminated.")
+        choice = user_select("Terminate vscode?",["Yes, terminate", "No, keep running"])
+        if choice == 0:
+            ngrok.kill()
+            print("vscode has been terminated.")
