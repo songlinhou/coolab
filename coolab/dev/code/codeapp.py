@@ -58,8 +58,11 @@ def do_something(sc):
     get_browse_history()
     s.enter(5, 1, do_something, (sc,))
 
+def hello():
+    print("hello, world")
 
 
+from threading import Timer
 
 def start_vscode_loop():
     from pyngrok import ngrok
@@ -67,8 +70,10 @@ def start_vscode_loop():
     port = global_status.get("port", 8050)
     vs_commd = f"./code-server-3.5.0-linux-x86_64/bin/code-server --port {port} --auth none"
     try:
-        s.enter(5, 1, do_something, (s,))
-        s.run(blocking=False)
+        # s.enter(5, 1, do_something, (s,))
+        # s.run(blocking=False)
+        t = Timer(3.0, hello)
+        t.start()
         print("start running code-server")
         run_bash(vs_commd)
     except KeyboardInterrupt:
