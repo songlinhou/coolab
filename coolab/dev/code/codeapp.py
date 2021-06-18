@@ -68,9 +68,5 @@ def start_vscode_loop():
         s.run()
         run_bash(vs_commd)
     except KeyboardInterrupt:
-        get_browse_history() # get history # TODO: error here!
-        choice = user_select("Terminate vscode?",["Yes, terminate", "No, keep running"])
-        if choice == 1:
-            ngrok.kill()
-            print("vscode has been terminated.")
-        else:
+        # get_browse_history() # get history # TODO: error here!
+        ngrok.kill()
