@@ -28,7 +28,7 @@ def download_vscode(silent = True):
 def get_history():
     from ..._utils import global_status
     port = global_status.get("port", 8050)
-    resp = requests.get(url=f"curl http://localhost:{port}/api/tunnels")
+    resp = requests.get(url=f"http://localhost:{port}/api/tunnels")
     data = resp.json() # Check the JSON Response Content documentation below
     pprint(data)
     return 
