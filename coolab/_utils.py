@@ -162,6 +162,9 @@ def load_token(regenerate_token = False):
                 json.dump({'token':token_input}, f)
                 print(f"{Bcolors.OKBLUE}Your token is saved at {token_json}{Bcolors.ENDC}")
                 token = token_input
+        else:
+            token = ""
+
     if len(token) > 0:
         global_status['token'] = token
         run_bash(f"ngrok authtoken {token}")
