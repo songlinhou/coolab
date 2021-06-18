@@ -117,6 +117,21 @@ def input_user_token():
             question = "Re-input your token in your workspace:"
     return token_input
 
+def input_user_token_empty_allowed():
+    question = "Input your ngrok token in your workspace:"
+    print(f"")
+    token_input = ""
+    while(1):
+        token_input = input(question).strip()
+        if len(token_input) == 0:
+            return ""
+        save_confirm = input("Are you sure the token is correct?[y/N]").strip().lower()
+        if save_confirm == "y":
+            break
+        else:
+            question = "Re-input your token in your workspace:"
+    return token_input
+
 
 def load_token(regenerate_token = False):
     global global_status
@@ -140,13 +155,16 @@ def load_token(regenerate_token = False):
                 print(f"{Bcolors.OKBLUE}Your token is saved at {token_json}{Bcolors.ENDC}")
                 token = token_input
     else:
-        token_input = input_user_token()
-        with open(token_json, 'w') as f:
-            json.dump({'token':token_input}, f)
-            print(f"{Bcolors.OKBLUE}Your token is saved at {token_json}{Bcolors.ENDC}")
-            token = token_input
-    global_status['token'] = token
-    run_bash(f"ngrok authtoken {token}")
+        # token_input = input_user_token()
+        token_input = input_user_token_empty_allowed()
+        if len(token_input) > 0:
+            with open(token_json, 'w') as f:
+                json.dump({'token':token_input}, f)
+                print(f"{Bcolors.OKBLUE}Your token is saved at {token_json}{Bcolors.ENDC}")
+                token = token_input
+    if len(token) > 0:
+        global_status['token'] = token
+        run_bash(f"ngrok authtoken {token}")
     return token
 
 def setting_up_caches(silent = False):
