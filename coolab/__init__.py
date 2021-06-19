@@ -1,5 +1,5 @@
 import os
-from ._utils import user_select, try_mount_drive, setting_workspace_drive, setting_up_caches, load_token, run_app
+from ._utils import user_select, try_mount_drive, setting_workspace_drive, setting_up_caches, load_token, run_app, Bcolors
 
 __version__ = "1.0.0"
 
@@ -8,7 +8,7 @@ class Code(object):
         from .dev.code.codeapp import download_vscode
         from ._utils import install_pip_dependencies, install_bash_dependencies
         if not os.path.exists(mount_path):
-            choice = user_select("Mount your google drive?[recommended for better user experience]", ["Yes","No"])
+            choice = user_select(f"Mount your google drive?[{Bcolors.BOLD}recommended{Bcolors.ENDC} for better user experience]", ["Yes","No"])
             if choice == 1:
                 try_mount_drive(mount_path)
         setting_workspace_drive(mount_path)

@@ -27,6 +27,10 @@ import coolab; coolab.Code().run() # run in seconds.
 
 We cache vscode installation files and configurations in your google drive if you choose to mount your drive. It takes much less time if you run the same code at the second time.
 
+* VScode installation package is cached (so need to re-download vscode)
+* Your connection token is cached (never worry about configuration)
+* Working directory is cached (so you always automatically get directed back to the last working directory)
+
 ## Next Step
 
 We aim to provide more online tools using the computation resource of Google Colab. You start to use these awesome tools and we deal with the rest!

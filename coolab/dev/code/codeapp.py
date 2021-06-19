@@ -96,7 +96,7 @@ def start_timer(func, debug):
 
 
 
-def start_vscode_loop(debug = True):
+def start_vscode_loop(debug = False):
     from pyngrok import ngrok
     from ..._utils import global_status, run_bash
     port = global_status.get("port", 8050)
