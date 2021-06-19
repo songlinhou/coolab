@@ -73,7 +73,7 @@ def get_browse_history(debug = False):
                 try:
                     if new_vscode_history != vscode_history:
                         with open(vscode_history_path, 'w') as f:
-                            json.dump(vscode_history, f)
+                            json.dump(new_vscode_history, f)
                             cprint("browsing history cached...", silent)
                 except:
                     cprint("error in caching browsing history", silent)
