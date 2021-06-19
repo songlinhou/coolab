@@ -152,7 +152,7 @@ def load_token(regenerate_token = False):
             token_input = input_user_token()
             with open(token_json, 'w') as f:
                 json.dump({'token':token_input}, f)
-                print(f"{Bcolors.OKBLUE}Your token is saved at {token_json}{Bcolors.ENDC}")
+                print(f"{Bcolors.OKBLUE}Your token is saved at {token_json}{Bcolors.ENDC}. Use {Bcolors.BOLD}coolab.Code().run(regen_token = False) if you need to update your token.{Bcolors.ENDC}")
                 token = token_input
     else:
         # token_input = input_user_token()
