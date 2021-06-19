@@ -34,9 +34,9 @@ def get_browse_history(debug = False):
     """
     return a list of working directories for current session
     """
-    def remove_duplicates(vscode_history, max_size = 50):
+    def remove_duplicates(h_list, max_size = 50):
         filtered = []
-        for h in vscode_history:
+        for h in h_list:
             if h not in filtered:
                 filtered.append(h)
         return filtered[:max_size]
@@ -69,6 +69,7 @@ def get_browse_history(debug = False):
                         vscode_history = []
                 new_vscode_history = uniq_dirs + vscode_history
                 new_vscode_history = remove_duplicates(new_vscode_history)
+                cprint('new_vscode_history='+str(new_vscode_history), silent)
                 try:
                     if new_vscode_history != vscode_history:
                         with open(vscode_history_path, 'w') as f:
@@ -95,7 +96,7 @@ def start_timer(func, debug):
 
 
 
-def start_vscode_loop(debug = False):
+def start_vscode_loop(debug = True):
     from pyngrok import ngrok
     from ..._utils import global_status, run_bash
     port = global_status.get("port", 8050)
