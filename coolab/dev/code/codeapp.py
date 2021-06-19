@@ -54,8 +54,8 @@ def get_browse_history(debug = False):
                 uniq_dirs.append(urls)
         uniq_dirs = [urls.split("/?folder=")[1] for urls in uniq_dirs]
         if len(uniq_dirs) > 0:
-            cprint("these work dirs will be saved", silent)
-            print(uniq_dirs)
+            cprint("these work dirs will be saved:", silent)
+            cprint(uniq_dirs, silent)
             # save dirs to cache
             from ..._utils import global_status, run_bash
             cache_folder_path = global_status.get("cache_folder_path", None)
@@ -87,7 +87,8 @@ timer = None
 
 def start_timer(func, debug):
     global timer
-    print("get history")
+    silent = not debug
+    cprint("get history", silent)
     func(debug)
     timer = Timer(20.0, start_timer,[func, debug])
     timer.start()
