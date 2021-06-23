@@ -25,11 +25,19 @@ import coolab; coolab.Code().run() # run in seconds.
 
 ## How Fast is it
 
-We cache vscode installation files and configurations in your google drive if you choose to mount your drive. It takes much less time if you run the same code at the second time.
+We cache vscode installation files and configurations in your google drive if you choose to mount your drive. It takes much less time if you run the same code at the second time (even in different colab sessions).
 
 * VScode installation package is cached (so need to re-download vscode)
 * Your connection token is cached (never worry about configuration)
 * Working directory is cached (so you always automatically get directed back to the last working directory)
+
+## How Coolab is Made
+
+*Coolab* is made using *coolab* on Google *Colab* `:laughing:`(pun intended).
+
+## Related Projects
+
+A similar project [colabcode](https://github.com/abhishekkrthakur/colabcode) also provides vscode access using colab. However, we aim to provide better user experience using caching mechanism.
 
 ## Next Step
 
@@ -38,3 +46,4 @@ We aim to provide more online tools using the computation resource of Google Col
 ## Suggestions
 
 Feel free to create new [issue](https://github.com/songlinhou/coolab/issues) so we can improve this library!
+
