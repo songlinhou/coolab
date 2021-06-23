@@ -33,7 +33,7 @@ We cache vscode installation files and configurations in your google drive if yo
 
 ## How Coolab is Made
 
-*Coolab* is made using *coolab* on Google *Colab* `:laughing:`(pun intended).
+*Coolab* is made using *coolab* on Google *Colab* :laughing: (pun intended).
 
 ## Related Projects
 
