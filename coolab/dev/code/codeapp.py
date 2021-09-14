@@ -27,7 +27,8 @@ def download_vscode(silent = True):
     else:
         cprint("found cached downloads", silent)
     shutil.copy(save_loc, "/content")
-    run_bash("tar -xf code-server-3.5.0-linux-x86_64.tar.gz")
+    # run_bash("tar -xf code-server-3.5.0-linux-x86_64.tar.gz")
+    run_bash("tar -xf /content/code-server-3.5.0-linux-x86_64.tar.gz -C /content/")
 
 
 def get_browse_history(debug = False):
@@ -100,7 +101,7 @@ def start_vscode_loop(debug = False):
     from pyngrok import ngrok
     from ..._utils import global_status, run_bash
     port = global_status.get("port", 8050)
-    vs_commd = f"./code-server-3.5.0-linux-x86_64/bin/code-server --port {port} --auth none"
+    vs_commd = f"/content/code-server-3.5.0-linux-x86_64/bin/code-server --port {port} --auth none"
     try:
         # s.enter(5, 1, do_something, (s,))
         # s.run(blocking=False)
