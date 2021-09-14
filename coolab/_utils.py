@@ -56,6 +56,9 @@ def run_bash(bash):
 
 def get_drive_name(mount_path = '/content/drive'):
     global global_status
+    if global_status.get('work_drive', None):
+        return global_status['work_drive']
+
     drive_folders = os.listdir('/content/drive')
     drive_folders = [d for d in drive_folders if not d.startswith(".") and os.path.isdir(f'/content/drive/{d}')]
     assert len(drive_folders) > 0, "No available drive found."
@@ -73,7 +76,7 @@ def get_drive_name(mount_path = '/content/drive'):
 def try_mount_drive(mount_path = '/content/drive', force_remount = False, drive_name = None):
     global global_status
     # global_status['workspace_drive'] = None
-    print("global_status",global_status)
+    # print("global_status",global_status)
     if 'workspace_drive' in global_status.keys():
         if global_status['workspace_drive'] and os.path.exists(mount_path):
             return drive_name
