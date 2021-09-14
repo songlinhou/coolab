@@ -64,7 +64,7 @@ def get_drive_name(mount_path = '/content/drive'):
     else:
         question = "Which drive do you plan to use (as workspace)?"
         choice = user_select(question, drive_folders)
-        drive_name = drive_folders[choice]
+        drive_name = drive_folders[choice-1]
     global_status['work_drive'] = drive_name
     return drive_name
 
