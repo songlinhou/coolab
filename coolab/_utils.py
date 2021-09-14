@@ -73,6 +73,7 @@ def get_drive_name(mount_path = '/content/drive'):
 def try_mount_drive(mount_path = '/content/drive', force_remount = False, drive_name = None):
     global global_status
     # global_status['workspace_drive'] = None
+    print("global_status",global_status)
     if 'workspace_drive' in global_status.keys():
         if global_status['workspace_drive'] and os.path.exists(mount_path):
             return drive_name
