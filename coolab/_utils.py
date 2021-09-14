@@ -72,7 +72,9 @@ def get_drive_name(mount_path = '/content/drive'):
 
 def try_mount_drive(mount_path = '/content/drive', force_remount = False, drive_name = None):
     global global_status
-    global_status['workspace_drive'] = None
+    # global_status['workspace_drive'] = None
+    if global_status['workspace_drive'] and os.path.exists(mount_path):
+        return drive_name
     if force_remount:
         drive.mount(mount_path,force_remount=True)
         cprint(f"Google drive is re-mounted on {mount_path}")
