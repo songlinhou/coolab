@@ -101,6 +101,13 @@ def start_vscode_loop(debug = False):
     from pyngrok import ngrok
     from ..._utils import global_status, run_bash
     port = global_status.get("port", 8050)
+    if not os.path.exists("/content/code-server-3.5.0-linux-x86_64/bin/code-server"):
+        print("error: cannot find code server file. Quit..")
+        if timer is not None:
+            timer.cancel()
+        ngrok.kill()
+        return
+
     vs_commd = f"/content/code-server-3.5.0-linux-x86_64/bin/code-server --port {port} --auth none"
     try:
         # s.enter(5, 1, do_something, (s,))
