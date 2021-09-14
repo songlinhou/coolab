@@ -47,3 +47,6 @@ We aim to provide more online tools using the computation resource of Google Col
 
 Feel free to create new [issue](https://github.com/songlinhou/coolab/issues) so we can improve this library!
 
+## Updates
+
+* Bug fixes to prevent crashing when selecting drives.
